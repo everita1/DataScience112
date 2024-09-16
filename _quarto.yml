@@ -1,7 +1,6 @@
 project:
   type: book
-  output-dir: docs
-  
+
 book:
   title: "Comp112"
   author: "Norah Jones"
@@ -19,6 +18,4 @@ format:
     theme: cosmo
 
 editor: visual
-
-
 
