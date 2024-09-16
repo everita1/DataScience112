@@ -1,6 +1,7 @@
 project:
   type: book
-
+  output-dir: docs
+  
 book:
   title: "Comp112"
   author: "Norah Jones"
@@ -16,8 +17,8 @@ bibliography: references.bib
 format:
   html:
     theme: cosmo
-  pdf:
-    documentclass: scrreprt
 
 editor: visual
+
+
 
