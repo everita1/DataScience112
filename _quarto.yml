@@ -3,16 +3,12 @@ project:
   output-dir: docs
 
 book:
-  title: "Comp112"
-  author: "Norah Jones"
+  title: "Comp112 Journal"
+  author: "Enrico Verità"
   date: "9/16/2024"
   chapters:
     - index.qmd
-    - intro.qmd
-    - summary.qmd
-    - references.qmd
-    - testactivity.qmd
-    - univizexercises.qmd
+    - Multivariate-viz-exercises.qmd
 
 bibliography: references.bib
 
