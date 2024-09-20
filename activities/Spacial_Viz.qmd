@@ -98,7 +98,7 @@ head(energy)
 Included are the following variables:
 
 | variable  | meaning                                                                                                      |
-|:----------|:-------------------------------------------------------------------------------------------------------------|
+|:------------|:----------------------------------------------------------|
 | therms    | a measure of energy use (the more energy used, the larger the therms)                                        |
 | address   | a or b                                                                                                       |
 | renovated | whether the location had been renovated, yes or no                                                           |
@@ -348,6 +348,14 @@ starbucks_mn <- starbucks %>%
 
 Create a leaflet map of the Starbucks locations in Minnesota. Keep it simple -- go back to Exercise 1 for an example.
 
+```{r}
+library(leaflet)
+
+leaflet(data = starbucks_mn) %>%
+  addTiles() %>%
+  addMarkers(lng = ~Longitude, lat = ~Latitude)
+```
+
 ### Part 2: Static points on a map
 
 Leaflet is very powerful and fun. But:
@@ -367,6 +375,10 @@ Let's start with the `ggplot()` tools we already know. Construct a scatterplot o
 It's pretty cool that the plots we already know can provide some spatial context. But what *don't* you like about this plot?
 
 ```{r}
+ggplot(starbucks, aes(x = Longitude, y = Latitude)) +
+  geom_point(alpha = 0.2, size = 0.2)
+
+
 ```
 
 #### Exercise 4: Adding a country-level background {.unnumbered}
@@ -418,7 +430,7 @@ ggplot(world_boundaries) +
 
 ##### Part c {.unnumbered}
 
-Summarize what you learned about Starbucks from this map.
+Starbucks has many locations in North America, Europe, and South East Asia. They have little to no locations in South America, Africa, Russia, Australia, North Korea, etc. 
 
 #### Exercise 5: Zooming in on some countries {.unnumbered}
 
@@ -513,16 +525,16 @@ head(midwest_boundaries)
 Adjust the code below to make the plot! Remove the `#` to run it.
 
 ```{r}
-# ggplot(___) + 
-#   geom___() + 
-#   geom___(
-#     data = ___,
-#     aes(x = ___, y = ___),
-#     alpha = 0.7,
-#     size = 0.2, 
-#     color = 'darkgreen'
-#   ) + 
-#   theme_map()
+  ggplot(midwest_boundaries) + 
+    geom_sf() + 
+    geom_point(
+      data = starbucks_midwest,
+      aes(x = Longitude, y = Latitude),
+      alpha = 0.7,
+      size = 0.2, 
+      color = 'darkgreen'
+    ) + 
+    theme_map()
 ```
 
 #### Exercise 7: Contour maps {.unnumbered}
