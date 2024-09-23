@@ -1,0 +1,42 @@
+09/23/24 Journal
+
+**Effective Visualization**
+
+Benefits of Visualizations
+
+-   Understanding what we're working with
+    -   Scales and typical outcomes
+    -   outliers, i.e. unusual cases
+    -   patterns and relationships
+-   Refine research questions and help inform our analysis
+-   Comminucate our findings and tell a story
+
+There's no one right way to visualize a data set.
+
+I think #2 of the dataset visualization examples is a unique and fun way to visualize the data. It provides the viewer with both a good idea of how the countries compare to each other, as well as with their individual growth.
+
+I think #32, on the other hand, is unclear and confusing to read. It is harder to compare the countries growth respective to their previous years.
+
+Categories of ineffective viz:
+
+-   ugly
+
+-   aesthetics are problematic
+
+-   viz is correct and otherwise clear
+
+-   bad
+
+-   viz is deceiving and/or unclear
+
+-   wrong
+
+-   viz is incorrect.
+
+The viz for maternity leave makes it easy to compare the different countries to each other while also clearly showing the individual values for each country. I think this viz is good.
+
+The viz for coffee intake also makes it easy to compare the different coffees to each other, but it is also kind of hard to read how much mg of caffeine each drink holds. Ultimately, I think this viz is good.
+
+Basic list of effective graphics - Professionalism - Accessibility - Design details - Ethics.
+
+More on data ethics: Michael Correll of Tableau Research and Data Feminism authors Catherine D'Ignazio and Lauren F. Klein.
