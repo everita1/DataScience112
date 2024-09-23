@@ -11,25 +11,25 @@ Benefits of Visualizations
 -   Refine research questions and help inform our analysis
 -   Comminucate our findings and tell a story
 
-There's no one right way to visualize a data set.
+*There's no one right way to visualize a data set.*
 
-I think #2 of the dataset visualization examples is a unique and fun way to visualize the data. It provides the viewer with both a good idea of how the countries compare to each other, as well as with their individual growth.
+I think #99 of the dataset visualization examples is a clear way to visualize the data. It provides the viewer with both a good idea of how the countries compare to each other, as well as with their individual percentage of growth.
 
 I think #32, on the other hand, is unclear and confusing to read. It is harder to compare the countries growth respective to their previous years.
 
 Categories of ineffective viz:
 
--   ugly
+-   **ugly**
 
 -   aesthetics are problematic
 
 -   viz is correct and otherwise clear
 
--   bad
+-   **bad**
 
 -   viz is deceiving and/or unclear
 
--   wrong
+-   **wrong**
 
 -   viz is incorrect.
 
