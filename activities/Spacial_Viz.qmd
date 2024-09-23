@@ -1,13 +1,4 @@
 ---
-title: "Spacial Viz"
----
-
-```{r}
-install.packages(c("sf", "maps", "RColorBrewer", "gplots", "socviz", "leaflet", "devtools"))
-devtools::install_github("ropensci/rnaturalearthhires")
-```
-
----
 title: "Spatial viz"
 number-sections: true
 execute: 
@@ -98,7 +89,7 @@ head(energy)
 Included are the following variables:
 
 | variable  | meaning                                                                                                      |
-|:------------|:----------------------------------------------------------|
+|:---------------|:-------------------------------------------------------|
 | therms    | a measure of energy use (the more energy used, the larger the therms)                                        |
 | address   | a or b                                                                                                       |
 | renovated | whether the location had been renovated, yes or no                                                           |
@@ -208,10 +199,10 @@ This dataset must include either:
 -   variable outcomes for your regions of interest (for choropleth maps)
 
 \
+
 ```{r}
 library(tidyverse)
 ```
-
 
 **Piece 2: A background map**
 
@@ -434,7 +425,7 @@ ggplot(world_boundaries) +
 
 ##### Part c {.unnumbered}
 
-Starbucks has many locations in North America, Europe, and South East Asia. They have little to no locations in South America, Africa, Russia, Australia, North Korea, etc. 
+Starbucks has many locations in North America, Europe, and South East Asia. They have little to no locations in South America, Africa, Russia, Australia, North Korea, etc.
 
 #### Exercise 5: Zooming in on some countries {.unnumbered}
 
@@ -804,4 +795,3 @@ ggplot(elections_by_counties, aes(map_id = county_fips, fill = median_age)) +
 Though `ggplot()` is often better for this purpose, we can also make choropleth maps with `leaflet()`. If you're curious, check out the `leaflet` documentation:
 
 <https://rstudio.github.io/leaflet/choropleths.html>
-
