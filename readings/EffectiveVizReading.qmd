@@ -33,9 +33,9 @@ Categories of ineffective viz:
 
 -   viz is incorrect.
 
-The viz for maternity leave makes it easy to compare the different countries to each other while also clearly showing the individual values for each country. I think this viz is good.
+The viz for maternity leave makes it easy to compare the different countries to each other while also clearly showing the individual values for each country. However, the way the graph shows the data should be simpler. I think this viz is ugly.
 
-The viz for coffee intake also makes it easy to compare the different coffees to each other, but it is also kind of hard to read how much mg of caffeine each drink holds. Ultimately, I think this viz is good.
+The viz for coffee intake also makes it easy to compare the different coffees to each other, but it is also kind of hard to read how much mg of caffeine each drink holds. Also, the scale at the bottom is confusing, so the numbers of mg of caffeine could be wrong. Therefore, I think this viz could be wrong.
 
 Basic list of effective graphics - Professionalism - Accessibility - Design details - Ethics.
 
