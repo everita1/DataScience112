@@ -8,7 +8,10 @@ book:
   date: "9/16/2024"
   chapters:
     - index.qmd
-    - Multivariate-viz-exercises.qmd
+    - activities/Multivariate-viz-exercises.qmd
+    - activities/EffectiveVizActivities.qmd
+    - activities/Spacial_Viz.qmd
+    
 
 bibliography: references.bib
 
