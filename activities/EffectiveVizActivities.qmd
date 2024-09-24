@@ -67,11 +67,11 @@ When we're including our plot in an article, paper, book, or other similar outle
 -   Render your Rmd and check out how the figure caption appears.
 
 ```{r}
-#| fig-cap: "???"
+#| fig-cap: "The relationship between temperature at 9 am and the temperature at 3 pm in Hobart, Uluru, and Wollongong"
 
 ggplot(weather, aes(y = temp3pm, x = temp9am, color = location)) + 
   geom_point() + 
-  labs(x = "???", y = "???", color = "???")  
+  labs(x = "Temp at 9am", y = "Temp at 3pm", color = "Location")  
 ```
 
 \
@@ -104,7 +104,7 @@ Add appropriate alt text at the top of the chunk, in `fig-alt`. Then knit your R
 
 ```{r}
 #| fig-cap: "Density plots of 3pm temperatures in 3 Australian locations."
-#| fig-alt: "???"
+#| fig-alt: "A density plot of temperatures at 3pm in Wollongong, Hobart, and Uluru. The plot indicates that temperature is hottest in Uluru and coldest in Hobart."
 
 ggplot(weather, aes(x = temp3pm, fill = location)) + 
   geom_density(alpha = 0.5) + 
