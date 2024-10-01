@@ -11,6 +11,8 @@ book:
     - activities/Multivariate-viz-exercises.qmd
     - activities/EffectiveVizActivities.qmd
     - activities/Spacial_Viz.qmd
+    - readings/EffectiveVizReading.qmd
+    - readings/WranglingVerbsReading.qmd
     
 
 bibliography: references.bib
