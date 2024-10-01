@@ -1,0 +1,321 @@
+---
+title: "Wrangling Verbs"
+number-sections: true
+execute: 
+  warning: false
+fig-env: 'figure'
+fig-pos: 'h'
+fig-align: center
+code-fold: false
+---
+
+::: {.callout-caution title="Learning Goals"}
+-   Explore the following wrangling verbs: `select`, `mutate`, `filter`, `arrange`, `summarize`, `group_by`
+-   Use the native pipe operator `|>`
+:::
+
+::: {.callout-note title="Additional Resources"}
+For more information about the topics covered in this chapter, refer to the resources below:
+
+-   [Intro to dplyr (YouTube)](https://www.youtube.com/watch?v=dqP0DejI7lw) by Lisa Lendway
+-   [Demonstration of dplyr (YouTube)](https://www.youtube.com/watch?v=PgZvq7ZPvEE&feature=youtu.be) by Lisa Lendway
+-   [Data Transformation (html)](https://r4ds.hadley.nz/data-transform.html) by Wickham, Çetinkaya-Rundel, & Grolemund
+-   [A Grammar for Data Wrangling (html)](https://mdsr-book.github.io/mdsr2e/ch-dataI.html) by Baumer, Kaplan, and Horton
+:::
+
+{{< include activity-instructions.qmd >}}
+
+## Data Wrangling Motivation
+
+Recall the elections data by U.S. county:
+
+```{r}
+# Load tidyverse & data
+library(tidyverse)
+elections <- read.csv("https://mac-stat.github.io/data/election_2020_county.csv")
+```
+
+We've used data viz to explore some general patterns in the election outcomes. For example, a map!
+
+```{r fig.width = 8}
+# Get a background map
+library(socviz)
+data(county_map)
+
+# Make a choropleth map
+library(RColorBrewer)  # For the color scale
+library(ggthemes) # For theme_map
+elections |> 
+  mutate(county_fips = as.character(county_fips)) |> 
+  mutate(county_fips = 
+           ifelse(nchar(county_fips) == 4, paste0("0", county_fips), county_fips)) |> 
+  ggplot(aes(map_id = county_fips, fill = cut(repub_pct_20, breaks = seq(0, 100, by = 10)))) +
+    geom_map(map = county_map) +
+    scale_fill_manual(values = rev(brewer.pal(10, "RdBu")), name = "% Republican") +
+    expand_limits(x = county_map$long, y = county_map$lat)  + 
+    theme_map() +
+    theme(legend.position = "right") + 
+    coord_equal()
+
+```
+
+Consider some fairly basic follow-up questions, each of which we cannot answer precisely (or sometimes even at all) using our data viz tools:
+
+-   How many total people voted for the Democratic and Republican candidates in 2020?
+-   What about in each state?
+-   In just the state of Minnesota:
+    -   Which counties had the highest and lowest Democratic vote in 2020?
+    -   How did the Democratic vote in each county *change* from 2016 to 2020?
+
+\
+\
+\
+\
+
+### Goals of Unit 2: Data Wrangling {-}
+
+We really cannot do anything with data (viz, modeling, etc) *unless* we can wrangle the data. The following is a typical quote. I agree with the 90% -- data wrangling isn't something we have to do before we can do data science, it *is* data science! But let's rethink the 10% -- data wrangling is a fun and empowering puzzle!
+
+![](https://mac-stat.github.io/images/112/david_robinson.png)
+
+The goals of Unit 2 are to explore how to:
+
+-   Get data into the tidy shape / format we need for analysis. For example, we might want to:
+    -   keep only certain observations
+    -   define new variables
+    -   reformat or "clean" existing variables
+    -   combine various datasets
+    -   process "string" or text data
+-   Numerically (not just visually) explore and summarize various characteristics of the variables in our dataset.
+
+\
+\
+\
+\
+
+### Tidyverse Wrangling Tools {-}
+
+We'll continue to use packages that are part of the `tidyverse` which share a common general grammar and structure.
+
+![](https://mac-stat.github.io/images/112/tidyverse.png)
+
+\
+\
+\
+\
+
+## Warm-Up
+
+There are lots and lots of steps that can go into data wrangling, thus lots and lots of relevant R functions. BUT just 6 functions can get us very far. People refer to these as the 6 main **wrangling verbs** or functions:
+
+-   why "verbs"? in the `tidyverse` grammar, functions serve as *action words*
+-   the 6 verbs are all stored in the `dplyr` package within the `tidyverse`
+-   each verb acts on a data frame and returns a data frame
+
+\
+\
+
+| verb        | action                                            |
+|:------------|:--------------------------------------------------|
+| `arrange`   | **arrange** the *rows* according to some *column* |
+| `filter`    | **filter** out or obtain a subset of the *rows*   |
+| `select`    | **select** a subset of *columns*                  |
+| `mutate`    | **mutate** or create a *column*                   |
+| `summarize` | calculate a numerical **summary** of a *column*   |
+| `group_by`  | **group** the *rows* by a specified *column*      |
+
+\
+\
+\
+\
+
+**EXAMPLE 1**
+
+Which verb would help us...
+
+a.  keep *only* information about state names, county names, and the 2020 and 2016 Democratic support (not the 2012 results, demographics, etc)
+
+The *select* verb
+
+b.  get *only* the data on Minnesota
+
+The *filter* verb
+
+c.  define a new variable which calculates the *change* in Democratic support from 2016 to 2020, using `dem_pct_20` and `dem_pct_16`
+
+The *mutate* verb
+
+d.  sort the counties from highest to lowest Democratic support
+
+The *arrange* verb
+
+e.  determine the total number of votes cast across all counties
+
+The *summarize* verb
+
+\
+\
+\
+\
+
+**EXAMPLE 2: select columns**
+
+To get a sense for the code structure, let's explore a couple verbs together. To start, let's simplify our dataset to include only some variables of interest. Specifically, `select()` only the *columns* relevant to state names, county names, and the 2020 and 2016 Democratic support:
+
+```{r eval = FALSE}
+# What's the first argument? The second?
+select(elections, c(state_name, county_name, dem_pct_20, dem_pct_16))
+```
+
+Let's re-do this with the **pipe function** `|>`:
+
+```{r eval = FALSE}
+elections |> 
+  select(state_name, county_name, dem_pct_20, dem_pct_16)
+```
+
+\
+\
+\
+\
+
+::: {.callout-note title="Pipe Function `|>`"}
+`|>` "passes" objects, usually datasets, to a function:
+
+`object |> function()` is the same as `function(object)`
+:::
+
+\
+\
+\
+\
+
+**EXAMPLE 3: filter rows**
+
+Let's `filter()` out only the *rows* related to Minnesota (MN):
+
+```{r eval = FALSE}
+# Without a pipe
+filter(elections, state_name == "Minnesota")
+```
+
+```{r eval = FALSE}
+# With a pipe
+elections |> 
+  filter(state_name == "Minnesota")
+```
+
+\
+\
+\
+\
+
+::: {.callout-note title="`==` vs `=`"}
+We use `a == b` to check whether `a` *matches* `b`.
+
+We use `a = b` to *define* that `a` is equal to `b`. We typically use `=` for this purpose inside a function, and `<-` for this purpose outside a function.
+
+```{r}
+# Ex: "=" defines x
+x = 2
+x
+```
+
+```{r}
+# Ex: "==" checks whether x is/matches 3
+x == 3
+```
+:::
+
+\
+\
+\
+\
+
+**EXAMPLE 4: filter and select**
+
+Let's *combine* `select()` and `filter()` to create a new dataset with info about the county names, and 2020 and 2016 Democratic support among Minnesota counties.
+
+```{r eval = FALSE}
+# Without pipes
+filter(select(elections, c(state_name, county_name, dem_pct_20, dem_pct_16)), state_name == "Minnesota")
+```
+
+```{r eval = FALSE}
+# With pipes: all verbs in 1 row
+elections |> select(state_name, county_name, dem_pct_20, dem_pct_16) |> filter(state_name == "Minnesota")
+```
+
+```{r eval = FALSE}
+# With pipes: each verb in a new row
+elections |> 
+  select(state_name, county_name, dem_pct_20, dem_pct_16) |> 
+  filter(state_name == "Minnesota")
+```
+
+```{r eval = FALSE}
+# We can even do this with UN-tidyverse code in "base" R
+elections[elections$state_name == "Minnesota", c(1, 4, 8, 12)]
+```
+
+::: {.callout-warning title="Reflection"}
+Why will we typically use:
+
+-   tidyverse code
+-   the pipe function `|>`
+-   each verb on a new row
+:::
+
+These will help us keep our code clear and easy to read, so that we can quickly read our code if we need to come back to it, or if we share our code with someone else. 
+
+\
+\
+\
+\
+
+**EXAMPLE 5: order of operations**
+
+Sometimes, the order of operations matters. For example: putting on socks, then shoes produces a different result than putting on shoes, then socks. Sometimes order doesn't matter. For example: Pouring cereal into a bowl, then adding milk produces the same result as pouring milk into a bowl, then adding cereal (though one order is obviously better than the other ;)) Above (also copied below), we `select`ed some columns and then `filter`ed some rows:
+
+```{r eval = FALSE}
+elections |> 
+  select(state_name, county_name, dem_pct_20, dem_pct_16) |> 
+  filter(state_name == "Minnesota")
+```
+
+Would we get the same result if we reversed `select()` and `filter()`? Think first, then try it.
+
+```{r}
+# Try it
+elections |> 
+  filter(state_name == "Minnesota") |>
+  select(state_name, county_name, dem_pct_20, dem_pct_16) 
+  
+```
+It seems to be the same. 
+
+
+\
+\
+\
+\
+
+**EXAMPLE 6: Storing the results**
+
+Typically:
+
+-   We want to store our data wrangling results.
+-   It's good practice to do so under a *new* name. We want to preserve, thus don't want to *overwrite*, the original data (especially if our code contains errors!!).
+
+```{r}
+# Store the results
+mn <- elections |> 
+  select(state_name, county_name, dem_pct_20, dem_pct_16) |> 
+  filter(state_name == "Minnesota")
+
+# Always check it out to confirm it's what you want it to be!
+head(mn)
+nrow(mn)
+nrow(elections)
+```
+
