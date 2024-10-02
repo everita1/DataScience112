@@ -1,0 +1,30 @@
+```{r}
+# Load tidyverse & data
+library(tidyverse)
+elections <- read.csv("https://mac-stat.github.io/data/election_2020_county.csv")
+```
+
+## arrange
+```{r}
+elections |> 
+  arrange(desc(county_name))
+```
+
+## summarize
+```{r}
+elections |> 
+  summarize (mean(county_fips))
+```
+
+## group By
+```{r}
+elections |> 
+  group_by(historical)
+```
+
+## filter
+```{r}
+elections |> 
+  filter(historical == "red")
+```
+
