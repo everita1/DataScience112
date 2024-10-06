@@ -65,6 +65,9 @@ Construct a plot that allows us to examine how the relationship between body mas
 :::
 
 ```{r}
+ggplot(penguins, aes(x = body_mass_g, y = bill_length_mm, color = species)) +
+  geom_point() +
+  facet_wrap(~sex)
 ```
 
 
@@ -78,28 +81,48 @@ Use the 6 wrangling verbs to address each task in the code chunk below.  You can
 ```{r}
 # Get data on only Adelie penguins that weigh more than 4700g
 
+penguins |> 
+  filter(species == "Adelie", body_mass_g > 4700)
 
 # Get data on penguin body mass only
 # Show just the first 6 rows
 
+penguins |> 
+  select(body_mass_g) |> 
+  head()
+
 
 # Sort the penguins from smallest to largest body mass
 # Show just the first 6 rows
+
+penguins |> 
+  arrange(body_mass_g) |> 
+  head()
 
 
 
 # Calculate the average body mass across all penguins
 # Note: na.rm = TRUE removes the NAs from the calculation
 
+penguins |> 
+  summarize(mean = mean(body_mass_g, na.rm = TRUE))
+
 
 
 # Calculate the average body mass by species
 
+penguins |> 
+  group_by(species) |> 
+  summarize(mean = mean(body_mass_g, na.rm = TRUE))
 
 
 # Create a new column that records body mass in kilograms, not grams
 # NOTE: there are 1000 g in 1 kg
 # Show just the first 6 rows
+
+penguins |> 
+  mutate(body_mass_k = body_mass_g/1000) |> 
+  head()
 
 
 ```
@@ -114,7 +137,8 @@ How many penguins of each species do we have? Create a viz that addresses this q
 
 
 ```{r}
-ggplot(penguins, aes(x = species))
+ggplot(penguins, aes(x = species)) +
+  geom_bar()
 ```
 
 ::: {.callout-warning title="Check Understanding"}
@@ -126,6 +150,9 @@ HINT: `n()` calculates group size.
 :::
 
 ```{r}
+penguins |> 
+  group_by(species) |> 
+  summarize(n())
 ```
 
 
@@ -153,17 +180,33 @@ Let's practice *combining* some verbs. For each task:
 -   Ask what you can rearrange and still get the same result.
 -   Read your final code like a paragraph / a conversation. Would another person be able to follow your logic?
 
+*group_by species == Gento, then mutata mm to cm, then arrange, descending bill length.*
+
 :::
 
 ```{r}
 # Sort Gentoo penguins from biggest to smallest with respect to their 
 # bill length in cm (there are 10 mm in a cm)
 
+penguins |> 
+  group_by(species == "Gento") |>
+  mutate(bill_length_cm = bill_length_mm/10) |> 
+  arrange(desc(bill_length_cm))
+
 ```
+
+Adding onto the previous code, the new verb we will use is summarize, mean
 
 ```{r}
 # Sort the species from smallest to biggest with respect to their 
 # average bill length in cm
+
+penguins |> 
+  mutate(bill_length_cm = bill_length_mm/10) |> 
+  group_by(species) |>
+  summarize(mean_bill_length= mean(bill_length_cm, na.rm = TRUE)) |> 
+  arrange(desc(mean_bill_length))
+
 
 ```
 
@@ -180,6 +223,8 @@ Let's practice reading and making sense of somebody *else*'s code. What do you t
 Once you've thought about it, put the code inside a chunk and run it!
 
 penguins |\> filter(species == "Chinstrap") |\> group_by(sex) |\> summarize(min = min(body_mass_g), max = max(body_mass_g)) |\> mutate(range = max - min)
+
+This code will produce the min and maximum body mass of the Chinstrap species of penguins, comparing them by sex. 
 
 \
 \
@@ -214,17 +259,17 @@ To comment/uncomment several lines of code at once, highlight them then click <k
 ```{r}
 # Create a dataset with just Adelie and Chinstrap using %in%
 # Pipe this into `count(species)` to confirm that you only have these 2 species
-# ___ |> 
-#   filter(___) |> 
-#   count(species)
+ penguins |> 
+   filter(species %in% c("Adelie", "Chinstrap")) |> 
+   count(species)
 ```
 
 ```{r}
 # Create a dataset with just Adelie and Chinstrap using !=
 # Pipe this into `count(species)` to confirm that you only have these 2 species
-# ___ |> 
-#   filter(___) |> 
-#   count(species)
+ penguins|> 
+   filter(species != "Gentoo") |> 
+   count(species)
 ```
 
 #### Part b {.unnumbered}
@@ -290,6 +335,8 @@ nrow(penguins)
 
 Explain why we should only use `na.omit()` in extreme circumstances.
 
+We may accidentally omit information or individuals we need or want to include. 
+
 \
 \
 \
@@ -311,25 +358,29 @@ names(penguins)
 
 ```{r}
 # Use a shortcut to keep everything but the year and island variables
-
+penguins |> 
+  select(-island, -year)
 
 ```
 
 ```{r}
 # Use a shortcut to keep only species and the penguin characteristics measured in mm
-
+penguins |> 
+  select(species, ends_with("mm"))
 
 ```
 
 ```{r}
 # Use a shortcut to keep only species and bill-related measurements
-
+penguins |> 
+  select(species, contains("bill"))
 
 ```
 
 ```{r}
 # Use a shortcut to keep only species and the length-related characteristics
-
+penguins |> 
+  select(species, contains("length"))
 
 ```
 
@@ -346,19 +397,19 @@ We've done examples where we need to `filter()` by more than one variable, or `s
 # Change this code to sort the penguins by species, and then island name
 # NOTE: The first row should be an Adelie penguin living on Biscoe island
 penguins |> 
-  arrange(species)
+  arrange(species, island)
 ```
 
 ```{r}
 # Change this code to count the number of male/female penguins observed for each species
 penguins |> 
-  count(species)
+  count(species, sex)
 ```
 
 ```{r}
 # Change this code to calculate the average body mass by species and sex
 penguins |> 
-  group_by(species) |> 
+  group_by(species, sex) |> 
   summarize(mean = mean(body_mass_g, na.rm = TRUE))
 
 ```
