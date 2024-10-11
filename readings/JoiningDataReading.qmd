@@ -1,0 +1,315 @@
+---
+title: "Joining Data"
+number-sections: true
+execute: 
+  warning: false
+fig-env: 'figure'
+fig-pos: 'h'
+fig-align: center
+code-fold: false
+---
+
+
+::: {.callout-caution title="Learning Goals"}
+
+Understand how to *join* different datasets:
+
+- mutating joins: `left_join()`, `inner_join()` and `full_join()` 
+- filtering joins: `semi_join()`, `anti_join()`
+
+:::
+
+::: {.callout-note title="Additional Resources"}
+
+For more information about the topics covered in this chapter, refer to the resources below:
+
+-   [Demonstration of joining data (YouTube)](https://www.youtube.com/watch?v=MJDHRtwZhoM&feature=youtu.be) by Lisa Lendway
+-   [Joings](https://r4ds.hadley.nz/joins) by Wickham, Çetinkaya-Rundel, & Grolemund
+-   [Data wrangling on multiple tables](https://mdsr-book.github.io/mdsr2e/ch-join.html) by Baumer, Kaplan, and Horton
+
+:::
+
+
+
+
+
+\
+\
+\
+\
+
+## Warm-up
+
+**Where are we? Data preparation**
+
+![](https://mac-stat.github.io/images/112/legos.png)
+
+Thus far, we've learned how to:
+
+-   `arrange()` our data in a meaningful order
+-   subset the data to only `filter()` the rows and `select()` the columns of interest
+-   `mutate()` existing variables and define new variables
+-   `summarize()` various aspects of a variable, both overall and by group (`group_by()`)
+-   reshape our data to fit the task at hand (`pivot_longer()`, `pivot_wider()`)
+
+\
+\
+\
+\
+
+**Motivation**
+
+In practice, we often have to collect and combine data from various sources in order to address our research questions. Example:
+
+-   What are the best predictors of album sales?\
+    Combine:
+    -   Spotify data on individual songs (eg: popularity, genre, characteristics)
+    -   sales data on individual songs
+-   What are the best predictors of flight delays?\
+    Combine:
+    -   data on individual flights including airline, starting airport, and destination airport
+    -   data on different airlines (eg: ticket prices, reliability, etc)
+    -   data on different airports (eg: location, reliability, etc)
+
+\
+\
+\
+\
+
+**EXAMPLE 1**
+
+Consider the following (made up) data on students and course enrollments:
+
+```{r}
+students_1 <- data.frame(
+  student = c("A", "B", "C"),
+  class = c("STAT 101", "GEOL 101", "ANTH 101")
+)
+
+# Check it out
+students_1
+```
+
+```{r}
+enrollments_1 <- data.frame(
+  class = c("STAT 101", "ART 101", "GEOL 101"),
+  enrollment = c(18, 17, 24)
+)
+
+# Check it out
+enrollments_1
+```
+
+Our goal is to *combine* or *join* these datasets into one. For reference, here they are side by side:
+
+![](https://mac-stat.github.io/images/112/join_1.png){width="50%"}
+
+First, consider the following:
+
+-   What variable or **key** do these datasets have in common? Thus by what information can we *match* the observations in these datasets?
+
+-   Relative to this key, what info does `students_1` have that `enrollments_1` doesn't?
+
+-   Relative to this key, what info does `enrollments_1` have that `students_1` doesn't?
+
+\
+\
+\
+\
+
+**EXAMPLE 2**
+
+There are various ways to join these datasets:
+
+![](https://mac-stat.github.io/images/112/join_1.png){width="50%"}
+
+Let's learn by doing. First, try the `left_join()` function:
+
+```{r}
+library(tidyverse)
+students_1 |> 
+  left_join(enrollments_1)
+```
+
+-   What did this do? What are the roles of `students_1` (the *left* table) and `enrollments_1` (the *right* table)?
+
+This combined the variables from the data set on the left to the one on the right, keeping all the variables from the one on the left. 
+
+-   What, if anything, would change if we reversed the order of the data tables? Think about it, then try.
+
+```{r}
+library(tidyverse)
+enrollments_1 |> 
+  left_join(students_1)
+```
+
+\
+\
+\
+\
+
+**EXAMPLE 3**
+
+Next, explore how our datasets are joined using `inner_join()`:
+
+![](https://mac-stat.github.io/images/112/join_1.png){width="50%"}
+
+```{r}
+students_1 |> 
+  inner_join(enrollments_1)
+```
+
+-   What did this do? What are the roles of `students_1` (the *left* table) and `enrollments_1` (the *right* table)?
+
+This only combined the variables that were shared between the two data sets. 
+
+-   What, if anything, would change if we reversed the order of the data tables? Think about it, then try.
+
+```{r}
+enrollments_1 |> 
+  inner_join(students_1)
+```
+
+\
+\
+\
+\
+
+**EXAMPLE 4**
+
+Next, explore how our datasets are joined using `full_join()`:
+
+![](https://mac-stat.github.io/images/112/join_1.png){width="50%"}
+
+```{r}
+students_1 |> 
+  full_join(enrollments_1)
+```
+
+-   What did this do? What are the roles of `students_1` (the *left* table) and `enrollments_1` (the *right* table)?
+
+This combined all the variables from the tables. 
+
+-   What, if anything, would change if we reversed the order of the data tables? Think about it, then try.
+
+```{r}
+enrollments_1 |> 
+  full_join(students_1)
+```
+
+\
+\
+\
+\
+
+**Mutating joins: left, inner, full**
+
+Mutating joins add new variables (columns) to the left data table from matching observations in the right table:
+
+`left_data |> mutating_join(right_data)`
+
+The most common mutating joins are:
+
+-   `left_join()`\
+    Keeps *all* observations from the left, but discards any observations in the right that do not have a match in the left.[^11-joining-data-1]
+
+-   `inner_join()`\
+    Keeps *only* the observations from the left with a match in the right.
+
+-   `full_join()`\
+    Keeps *all* observations from the left *and* the right. (This is less common than `left_join()` and `inner_join()`).
+
+[^11-joining-data-1]: There is also a `right_join()` that adds variables in the reverse direction from the left table to the right table, but we do not really need it as we can always switch the roles of the two tables.︎
+
+NOTE: When an observation in the left table has *multiple* matches in the right table, these mutating joins produce a *separate* observation in the new table for each match.
+
+\
+\
+\
+\
+
+**EXAMPLE 5**
+
+*Mutating* joins *combine* information, thus increase the number of columns in a dataset (like `mutate()`). *Filtering* joins keep only certain observations in one dataset (like `filter()`), not based on rules related to any variables in the dataset, but on the observations that exist in another dataset. This is useful when we merely care about the membership or non-membership of an observation in the other dataset, not the raw data itself.
+
+In our example data, suppose `enrollments_1` only included courses being taught in the Theater building:
+
+![](https://mac-stat.github.io/images/112/join_1.png){width="50%"}
+
+```{r}
+students_1 |> 
+  semi_join(enrollments_1)
+```
+
+-   What did this do? What info would it give us?
+
+It discards the variables on the left that do not have a match with the ones on the right, also discarding any extras. 
+
+-   How does `semi_join()` differ from `inner_join()`?
+
+semi join discards all the variables without a match, similar to inner join. However, it also discards any extras, only leaving one. 
+
+
+-   What, if anything, would change if we reversed the order of the data tables? Think about it, then try.
+
+```{r}
+enrollments_1 |> 
+  semi_join(students_1)
+```
+
+\
+\
+\
+\
+
+**EXAMPLE 6**
+
+Let's try another filtering join for our example data:
+
+![](https://mac-stat.github.io/images/112/join_1.png){width="50%"}
+
+```{r}
+students_1 |> 
+  anti_join(enrollments_1)
+```
+
+-   What did this do? What info would it give us?
+
+It discarded any observations on the left with a match right. We can easily notice what the differences in the data set are. 
+
+-   What, if anything, would change if we reversed the order of the data tables? Think about it, then try.
+
+```{r}
+enrollments_1 |> 
+  anti_join(students_1)
+```
+
+\
+\
+\
+\
+
+**Filtering joins: semi, anti**
+
+Filtering joins keep specific observations from the left table based on whether they match an observation in the right table.
+
+-   `semi_join()`\
+    Discards any observations in the left table that *do not* have a match in the right table. If there are multiple matches of right cases to a left case, it keeps just one copy of the left case.
+
+-   `anti_join()`\
+    Discards any observations in the left table that *do* have a match in the right table.
+
+\
+\
+\
+\
+\
+\
+
+**A SUMMARY OF ALL OF OUR JOINS**
+
+![](https://mac-stat.github.io/images/112/join_summary.png)
+
+\
+\
+\
