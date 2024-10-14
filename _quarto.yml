@@ -16,6 +16,7 @@ book:
     - readings/WranglingVerbsReading.qmd
     - activities/WranglingVerbsActivities.qmd
     - readings/JoiningDataReading.qmd
+    - activities/JoiningDataExercises.qmd
 
   
     
