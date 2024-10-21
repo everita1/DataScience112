@@ -27,9 +27,6 @@ For more information about the topics covered in this chapter, refer to the reso
 
 {{< include activity-instructions.qmd >}}
 
-
-
-
 ## Warm-up
 
 **EXAMPLE 1: warm-up counts and proportions**
@@ -105,7 +102,7 @@ head(penguin_avg)
 
 2.  Did the reshaping process result in any information loss from the original data?
 
-You lose the information on flipper length, individual body mass, bill length and depth, etc. So, you lose most of the information on the penguins except for body mass. 
+You lose the information on flipper length, individual body mass, bill length and depth, etc. So, you lose most of the information on the penguins except for body mass.
 
 \
 \
@@ -140,7 +137,7 @@ Let's calculate the *difference* in average body mass, male vs female, for each 
 penguin_avg
 ```
 
-The penguins. Specifically their species and sex. 
+The penguins. Specifically their species and sex.
 
 \
 \
@@ -184,10 +181,8 @@ penguin_avg |>
 ```
 
 ::: {.callout-note title="Pivot Wider"}
-
 -   `names_from` = the variable whose values we want to separate into their own columns, i.e. where we want to get the new column *names from*
 -   `values_from` = which variable to take the new column *values from*
-
 :::
 
 FOLLOW-UP:
@@ -227,11 +222,9 @@ penguin_avg_wide |>
 ```
 
 ::: {.callout-note title="Pivot Longer"}
-
 -   `cols` = the columns (variables) to collect into a single, new variable. we can also specify what variables we *don't* want to collect
 -   `names_to` = the name of the new variable which will include the *names* or labels of the collected variables
 -   `values_to` = the name of the new variable which will include the *values* of the collected variables
-
 :::
 
 FOLLOW-UP:
@@ -297,9 +290,9 @@ more_food |>
 
 ### Exercise 1: What's the problem? {.unnumbered}
 
-Consider data on a sleep study in which subjects received only 3 hours of sleep per night.  Each day, their reaction time to a stimulus (in ms) was recorded.[^10-reshaping-data-1]
+Consider data on a sleep study in which subjects received only 3 hours of sleep per night. Each day, their reaction time to a stimulus (in ms) was recorded.[^reshapingdata-1]
 
-[^10-reshaping-data-1]: Gregory Belenky, Nancy J. Wesensten, David R. Thorne, Maria L. Thomas, Helen C. Sing, Daniel P. Redmond, Michael B. Russo and Thomas J. Balkin (2003) Patterns of performance degradation and restoration during sleep restriction and subsequent recovery: a sleep dose-response study. Journal of Sleep Research 12, 1–12.
+[^reshapingdata-1]: Gregory Belenky, Nancy J. Wesensten, David R. Thorne, Maria L. Thomas, Helen C. Sing, Daniel P. Redmond, Michael B. Russo and Thomas J. Balkin (2003) Patterns of performance degradation and restoration during sleep restriction and subsequent recovery: a sleep dose-response study. Journal of Sleep Research 12, 1–12.
 
 ```{r}
 sleep_wide <- read.csv("https://mac-stat.github.io/data/sleep_wide.csv")
@@ -587,7 +580,6 @@ Now, using the `broad_group` variable in `plot_data`, recreate the graphic from 
 \
 \
 \
-
 
 ## Solutions
 
