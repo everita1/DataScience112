@@ -34,9 +34,9 @@ For more information about the topics covered in this chapter, refer to the reso
 
 ### Exercise 1: What's the problem? {.unnumbered}
 
-Consider data on a sleep study in which subjects received only 3 hours of sleep per night.  Each day, their reaction time to a stimulus (in ms) was recorded.[^10-reshaping-data-1]
+Consider data on a sleep study in which subjects received only 3 hours of sleep per night. Each day, their reaction time to a stimulus (in ms) was recorded.[^reshapingdataexercises-1]
 
-[^10-reshaping-data-1]: Gregory Belenky, Nancy J. Wesensten, David R. Thorne, Maria L. Thomas, Helen C. Sing, Daniel P. Redmond, Michael B. Russo and Thomas J. Balkin (2003) Patterns of performance degradation and restoration during sleep restriction and subsequent recovery: a sleep dose-response study. Journal of Sleep Research 12, 1–12.
+[^reshapingdataexercises-1]: Gregory Belenky, Nancy J. Wesensten, David R. Thorne, Maria L. Thomas, Helen C. Sing, Daniel P. Redmond, Michael B. Russo and Thomas J. Balkin (2003) Patterns of performance degradation and restoration during sleep restriction and subsequent recovery: a sleep dose-response study. Journal of Sleep Research 12, 1–12.
 
 ```{r}
 sleep_wide <- read.csv("https://mac-stat.github.io/data/sleep_wide.csv")
@@ -56,7 +56,7 @@ Suppose I ask you to plot each subject's reaction time (y-axis) vs the number of
 
 `ggplot(sleep_wide), aes(y = reaction time, x = subject, color = day ))`
 
-The days and reaction time for the data sets need to be in one column, that way we can fit them under a single variable. That way, each row represents a subject/day format to graph. 
+The days and reaction time for the data sets need to be in one column, that way we can fit them under a single variable. That way, each row represents a subject/day format to graph.
 
 #### Part c {.unnumbered}
 
@@ -173,7 +173,7 @@ Summarize what you learned from the plots. For example:
 -   What's the general relationship between reaction time and sleep?
 -   Is this the same for everybody? What differs?
 
-reaction time generally worsens (gets longer) with lack of sleep, though some subjects are more affected than others. For instance, 308 has a longer reaction time than 351. 
+reaction time generally worsens (gets longer) with lack of sleep, though some subjects are more affected than others. For instance, 308 has a longer reaction time than 351.
 
 \
 \
@@ -233,8 +233,8 @@ ggplot(billboard, aes(y = wk1, x = wk2))+
   geom_point() +
   geom_abline(intercept = 0, slope = 1)
 ```
-Generally, most songs improved their rankings in the second week compared to the first week. 
 
+Generally, most songs improved their rankings in the second week compared to the first week.
 
 #### Part b {.unnumbered}
 
@@ -373,4 +373,4 @@ plot_data |>
 \
 \
 
-This activity was medium difficulty for me. I had trouble with some of the wrangling, especially at the end. However, the pivot functions were pretty clear to me, which I think was one of the main goals of the activity, so I am satisfied overall. 
+This activity was medium difficulty for me. I had trouble with some of the wrangling, especially at the end. However, the pivot functions were pretty clear to me, which I think was one of the main goals of the activity, so I am satisfied overall.

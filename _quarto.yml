@@ -19,6 +19,8 @@ book:
     - activities/JoiningDataExercises.qmd
     - readings/factorsreading.qmd
     - activities/factorsexercises.qmd
+    - readings/StringsReading.qmd
+    - activities/Stringsactivity.qmd
 
   
     
