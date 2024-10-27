@@ -1,0 +1,39 @@
+There are multiple common file types. We have so far used .csv files, but there are many others like:
+
+-   Excel files: `.xls`, `.xlsx`
+
+-   R “data serialization” files: `.rds`
+
+-   files with tab-separated values: `.tsv`
+
+Data repositories are ideal when you're not looking for specific data.
+
+For more specific data, search engines like Google are better. You can specify searches with keywords, and by specifying data type. i.e. pet adoption, file type: .csv.
+
+You should save your data on your computer to avoid relying on another person/institution.
+
+When important data into rstudio, two things are especially important:
+
+-   File type
+
+    -   indicates which function we will need to import.
+
+        -   read_csv, read_delim, etc.
+
+-   File location
+
+    -   to import, we need to apply the correct function to the file path
+
+        -   a file path is an address to where the file is stored on the computer.
+
+Once the data has been imported, ask an answer some important preliminary questions like:
+
+-   what is the structure of the data?
+
+-   what needs to be cleaned and organized?
+
+Now, you need to understand the data:
+
+-   where does it come from?
+
+-   who can I reach out to?
